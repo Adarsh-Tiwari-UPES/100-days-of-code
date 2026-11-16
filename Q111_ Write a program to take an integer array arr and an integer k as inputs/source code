@@ -1,0 +1,58 @@
+//Q111: Write a program to take an integer array arr and an integer k as inputs. The task is to find the first negative integer in each subarray of size k moving from left to right. If no negative exists in a window, print "0" for that window. Print the results separated by spaces as output.
+
+/*
+Sample Test Cases:
+Input 1:
+5
+-8 2 3 -6 10
+2
+Output 1:
+-8 0 -6 -6
+
+Input 2:
+8
+12 -1 -7 8 -15 30 16 28
+3
+Output 2:
+-1 -1 -7 -15 -15 0
+
+*/
+
+#include <stdio.h>
+
+int main() {
+    int n;
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        return 1;
+    }
+    int arr[n];
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+    int k;
+    if (scanf("%d", &k) != 1 || k <= 0 || k > n) {
+        return 1;
+    }
+    int neg_indices[n];
+    int front = 0, rear = -1;
+    for (int i = 0; i < n; i++) {
+        if (front <= rear && neg_indices[front] <= i - k) {
+            front++;
+        }
+        if (arr[i] < 0) {
+            neg_indices[++rear] = i;
+        }
+        if (i >= k - 1) {
+            if (front <= rear) {
+                printf("%d", arr[neg_indices[front]]);
+            } else {
+                printf("0");
+            }
+            if (i < n - 1) {
+                printf(" ");
+            }
+        }
+    }
+    printf("\n");
+    return 0;
+}
